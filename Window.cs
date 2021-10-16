@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class Window : EditorWindow
 {
-    private string myString = "Hello Person!";
     private string source = "enter src path here...";
     private string destination = "enter dest path here...";
     private float timerInterval = 10f;
@@ -22,8 +21,7 @@ public class Window : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label("This is a Label.", EditorStyles.boldLabel);
-
-        myString = EditorGUILayout.TextField("Name", myString);
+        
         source = EditorGUILayout.TextField("sourceFilePath", source);
         if (GUILayout.Button("Browse"))
         {
@@ -40,12 +38,6 @@ public class Window : EditorWindow
             timer += timerInterval;
             Debug.Log("10 Seconds passed");
             // Call Bastis function
-        }
-        
-        if (GUILayout.Button("Press Me pls"))
-        {
-            Debug.Log("Button pressed!");
-            myString = $"{EditorApplication.timeSinceStartup.ToString("N1")} Timer:{timer.ToString("N1")}";
         }
     }
 }
