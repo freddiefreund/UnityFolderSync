@@ -5,12 +5,12 @@ public class FileCopy
 {
     public static void CopyIfNewer(String srcDir, String destDir)
     {
-        string[] originalFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
+        string[] srcFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
 
-        Array.ForEach(originalFiles, (originalFileLocation) =>
+        Array.ForEach(srcFiles, (srcFileLocation) =>
         {
-            FileInfo originalFile = new FileInfo(originalFileLocation);
-            FileInfo destFile = new FileInfo(originalFileLocation.Replace(srcDir, destDir));
+            FileInfo originalFile = new FileInfo(srcFileLocation);
+            FileInfo destFile = new FileInfo(srcFileLocation.Replace(srcDir, destDir));
 
             if (destFile.Exists)
             {
