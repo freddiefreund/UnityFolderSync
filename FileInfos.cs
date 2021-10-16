@@ -1,11 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 public class FileInfos
 {
+    public static bool DirPathExists(String path)
+    {
+        try
+        {
+            DirectoryInfo realPath = new DirectoryInfo(path);
+            return realPath.Exists;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    
     public static List<String> GetNewFiles(String srcDir, String destDir)
     {
+
+        if (!DirPathExists(srcDir))
+        {
+            Debug.Log("src dir does not exist");
+            return new List<string>();
+        }
+        if (!DirPathExists(destDir))
+        {
+            Debug.Log("dest dir does not exist");
+            return new List<string>();
+        }
+        
         List<String> newFiles = new List<string>();
         string[] srcFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
 
