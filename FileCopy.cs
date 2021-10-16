@@ -14,7 +14,7 @@ public class FileCopy
 
             if (destFile.Exists)
             {
-                if (originalFile.Length > destFile.Length)
+                if (originalFile.LastWriteTime > destFile.LastWriteTime)
                 {
                     originalFile.CopyTo(destFile.FullName, true);
                 }

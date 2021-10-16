@@ -15,7 +15,6 @@ public class Window : EditorWindow
     public static void ShowWindow()
     {
         GetWindow<Window>("Example");
-        
     }
 
     private void OnGUI()
@@ -33,11 +32,17 @@ public class Window : EditorWindow
             destination = EditorUtility.OpenFolderPanel("Destination folder", "", "");
         }
 
+        if (GUILayout.Button("Sync Folders"))
+        {
+            FileCopy.CopyIfNewer(source, destination);    
+        }
+        
         if (EditorApplication.timeSinceStartup > timer)
         {
             timer += timerInterval;
             Debug.Log("10 Seconds passed");
-            // Call Bastis function
         }
+        
+        
     }
 }
