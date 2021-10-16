@@ -18,14 +18,12 @@ public class FileInfos
             {
                 if (srcFile.LastWriteTime > destFile.LastWriteTime)
                 {
-                    srcFile.CopyTo(destFile.FullName, true);
-                    newFiles.Add(destFile.FullName);
+                    newFiles.Add(destFile.Name);
                 }
             }
             else
             {
-                Directory.CreateDirectory(destFile.DirectoryName);
-                newFiles.Add(destFile.FullName);
+                newFiles.Add(destFile.Name);
             }
         });
         return newFiles;
