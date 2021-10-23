@@ -14,12 +14,15 @@ public static class GuiStyles
             fontSize = 12, 
             fontStyle = FontStyle.Bold,
             normal = new GUIStyleState() {textColor = new Color(0.3f, 0.55f, 0f)},
-            margin = new RectOffset(10, 2, 2, 10)
+            margin = new RectOffset(10, 0, 0, 10),
+            padding = new RectOffset(0,0,0,0)
         };
         yellowText = new GUIStyle()
         {
             fontSize = 12, fontStyle = FontStyle.Bold,
-            normal = new GUIStyleState() {textColor = new Color(0.8f, 0.67f, 0f)}
+            normal = new GUIStyleState() {textColor = new Color(0.8f, 0.67f, 0f)},
+            margin = new RectOffset(10, 0, 0, 10),
+            padding = new RectOffset(0,0,0,0)
         };
     }
 }

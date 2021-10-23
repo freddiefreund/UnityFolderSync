@@ -23,12 +23,12 @@ public class FileInfos
 
         if (!DirPathExists(srcDir))
         {
-            Debug.LogError("src dir does not exist");
+            Debug.LogError("Source Directory does not exist");
             return (new List<string>(), new List<string>());
         }
         if (!DirPathExists(destDir))
         {
-            Debug.LogError("dest dir does not exist");
+            Debug.LogError("Destination Directory does not exist");
             return (new List<string>(), new List<string>());
         }
         
