@@ -18,21 +18,22 @@ public class FileInfos
         }
     }
     
-    public static List<String> GetNewFiles(String srcDir, String destDir)
+    public static (List<String>, List<String>) GetNewFiles(String srcDir, String destDir)
     {
 
         if (!DirPathExists(srcDir))
         {
             Debug.LogError("src dir does not exist");
-            return new List<string>();
+            return (new List<string>(), new List<string>());
         }
         if (!DirPathExists(destDir))
         {
             Debug.LogError("dest dir does not exist");
-            return new List<string>();
+            return (new List<string>(), new List<string>());
         }
         
         List<String> newFiles = new List<string>();
+        List<String> modifedFiles = new List<string>();
         string[] srcFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
 
         Array.ForEach(srcFiles, (srcFileLocation) =>
@@ -44,7 +45,7 @@ public class FileInfos
             {
                 if (srcFile.LastWriteTime > destFile.LastWriteTime)
                 {
-                    newFiles.Add(destFile.Name);
+                    modifedFiles.Add(destFile.Name);
                 }
             }
             else
@@ -52,6 +53,6 @@ public class FileInfos
                 newFiles.Add(destFile.Name);
             }
         });
-        return newFiles;
+        return (newFiles, modifedFiles);
     }
 }

@@ -12,6 +12,7 @@ public class Window : EditorWindow
     private float timerInterval = 10f;
     private float timer;
     private List<string> newFileNames;
+    private List<string> modifiedFileNames;
     
     [MenuItem("Window/UnityFolderSync")]
     public static void ShowWindow()
@@ -43,7 +44,7 @@ public class Window : EditorWindow
         EditorGUILayout.Space();
         if (newFileNames.Count > 0)
         {
-            GUILayout.Label("Changes found:", EditorStyles.boldLabel);
+            GUILayout.Label("new files:", EditorStyles.boldLabel);
             EditorGUILayout.BeginVertical();
             foreach (var filename in newFileNames)
             {
@@ -51,7 +52,17 @@ public class Window : EditorWindow
             }
             EditorGUILayout.EndVertical();    
         }
-        else
+        if (modifiedFileNames.Count > 0)
+        {
+            GUILayout.Label("modified files:", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical();
+            foreach (var filename in modifiedFileNames)
+            {
+                GUILayout.Label(filename, EditorStyles.label);    
+            }
+            EditorGUILayout.EndVertical();    
+        }
+        else if (modifiedFileNames.Count == 0 && newFileNames.Count == 0)
         {
             GUILayout.Label("Everything up to date", EditorStyles.boldLabel);
         }
@@ -77,18 +88,6 @@ public class Window : EditorWindow
 
     private void CheckForChanges()
     {
-        newFileNames = FileInfos.GetNewFiles(source, destination);
-        if (newFileNames.Count == 0)
-        {
-            Debug.Log("No changes found...");
-        }
-        else
-        {
-            Debug.Log("Changes found:");
-            foreach (string name in newFileNames)
-            {
-                Debug.Log(name);
-            }
-        }
+        (newFileNames, modifiedFileNames) = FileInfos.GetNewFiles(source, destination);
     }
 }
