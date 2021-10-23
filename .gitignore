@@ -470,4 +470,6 @@ fabric.properties
 # entire rider folder
 .idea/
 
+config.json
+
 # End of https://www.toptal.com/developers/gitignore/api/csharp,rider

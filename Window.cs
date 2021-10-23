@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -9,6 +11,7 @@ public class Window : EditorWindow
 {
     private string source = "";
     private string destination = "";
+    SyncConfig config;
     private float timerInterval = 10f;
     private float timer;
     private List<string> newFileNames;
@@ -19,6 +22,22 @@ public class Window : EditorWindow
     {
         GetWindow<Window>("UnityFolderSync");
         Debug.Log("ShowWindow called");
+    }
+
+    void LoadConfig()
+    {
+        string path = Application.dataPath + "/Scripts/UniteFileSync/config.json";
+        try
+        {
+            var json = File.ReadAllText(path);
+            config = JsonUtility.FromJson<SyncConfig>(json);
+            Debug.Log(config.srcDir);
+            Debug.Log(config.destDir);
+        }
+        catch
+        {
+            Debug.Log("FILE NOT FOUND");
+        }
     }
     
     private void OnGUI()
@@ -71,6 +90,7 @@ public class Window : EditorWindow
         
         if (GUILayout.Button("Sync Folders"))
         {
+            LoadConfig();
             if(source == "" || destination == "")
                 return;
             FileCopy.CopyIfNewer(source, destination);
