@@ -9,10 +9,9 @@ using UnityEngine.PlayerLoop;
 
 public class Window : EditorWindow
 {
-    private string source = "";
-    private string destination = "";
     private float timerInterval = 10f;
     private float timer;
+    private SyncConfig config = new SyncConfig();
     private List<string> newFileNames = new List<string>();
     private List<string> modifiedFileNames = new List<string>();
     
@@ -25,52 +24,26 @@ public class Window : EditorWindow
 
     private void Awake()
     {
-        LoadConfig();
+        SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", out config);
     }
 
-    void LoadConfig()
-    {
-        string path = Application.dataPath + "/Scripts/UniteFileSync/config.json";
-        try
-        {
-            var json = File.ReadAllText(path);
-            SyncConfig config = JsonUtility.FromJson<SyncConfig>(json);
-            destination = config.destDir;
-            source = config.srcDir;
-        }
-        catch
-        {
-            Debug.Log("FILE NOT FOUND");
-        }
-    }
-
-    void SaveConfig()
-    {
-        string path = Application.dataPath + "/Scripts/UniteFileSync/config.json";
-        SyncConfig config = new SyncConfig();
-        config.destDir = destination;
-        config.srcDir = source;
-        var json = JsonUtility.ToJson(config);
-        File.WriteAllText(path,json);
-    }
-    
     private void OnGUI()
     {
         GUILayout.Label($"Enter the paths of the folders you want to sync", EditorStyles.boldLabel);
 
         Rect row1 = EditorGUILayout.BeginHorizontal();
-        source = EditorGUILayout.TextField("Source path", source);
+        config.srcDir = EditorGUILayout.TextField("Source path", config.srcDir);
         if (GUILayout.Button("Browse"))
         {
-            source = EditorUtility.OpenFolderPanel("Source folder", source, "");
+            config.srcDir = EditorUtility.OpenFolderPanel("Source folder", config.srcDir, "");
         }
         EditorGUILayout.EndHorizontal();
         
         Rect row2 = EditorGUILayout.BeginHorizontal();
-        destination = EditorGUILayout.TextField("Destination path", destination);
+        config.destDir = EditorGUILayout.TextField("Destination path", config.destDir);
         if (GUILayout.Button("Browse"))
         {
-            destination = EditorUtility.OpenFolderPanel("Destination folder", Application.dataPath, "");
+            config.destDir = EditorUtility.OpenFolderPanel("Destination folder", Application.dataPath, "");
         }
         EditorGUILayout.EndHorizontal();
 
@@ -102,18 +75,18 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
-            SaveConfig();
+            config.SaveConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", config);
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
-            LoadConfig();
+            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", out config);
         }
         if (GUILayout.Button("Sync Folders"))
         {
-            if(source == "" || destination == "")
+            if(config.srcDir == "" || config.destDir == "")
                 return;
-            FileCopy.CopyIfNewer(source, destination);
+            FileCopy.CopyIfNewer(config.srcDir, config.destDir);
             newFileNames.Clear();
         }
     }
@@ -123,7 +96,7 @@ public class Window : EditorWindow
         if (EditorApplication.timeSinceStartup > timer)
         {
             timer = (float)EditorApplication.timeSinceStartup + timerInterval;
-            if(source == "" || destination == "")
+            if(config.srcDir == "" || config.destDir == "")
                 return;
             CheckForChanges();
             Debug.Log("Timer was triggered");
@@ -132,6 +105,6 @@ public class Window : EditorWindow
 
     private void CheckForChanges()
     {
-        (newFileNames, modifiedFileNames) = FileInfos.GetNewFiles(source, destination);
+        (newFileNames, modifiedFileNames) = FileInfos.GetNewFiles(config.srcDir, config.destDir);
     }
 }
