@@ -24,7 +24,7 @@ public class Window : EditorWindow
 
     private void Awake()
     {
-        SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", out config);
+        SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
     }
 
     private void OnGUI()
@@ -75,12 +75,12 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
-            config.SaveConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", config);
+            config.SaveConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", config);
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
-            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UniteFileSync/config.json", out config);
+            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
         }
         if (GUILayout.Button("Sync Folders"))
         {
