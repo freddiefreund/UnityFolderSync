@@ -11,11 +11,10 @@ public class Window : EditorWindow
 {
     private string source = "";
     private string destination = "";
-    SyncConfig config;
     private float timerInterval = 10f;
     private float timer;
-    private List<string> newFileNames;
-    private List<string> modifiedFileNames;
+    private List<string> newFileNames = new List<string>();
+    private List<string> modifiedFileNames = new List<string>();
     
     [MenuItem("Window/UnityFolderSync")]
     public static void ShowWindow()
@@ -24,27 +23,40 @@ public class Window : EditorWindow
         Debug.Log("ShowWindow called");
     }
 
+    private void Awake()
+    {
+        LoadConfig();
+    }
+
     void LoadConfig()
     {
         string path = Application.dataPath + "/Scripts/UniteFileSync/config.json";
         try
         {
             var json = File.ReadAllText(path);
-            config = JsonUtility.FromJson<SyncConfig>(json);
-            Debug.Log(config.srcDir);
-            Debug.Log(config.destDir);
+            SyncConfig config = JsonUtility.FromJson<SyncConfig>(json);
+            destination = config.destDir;
+            source = config.srcDir;
         }
         catch
         {
             Debug.Log("FILE NOT FOUND");
         }
     }
+
+    void SaveConfig()
+    {
+        string path = Application.dataPath + "/Scripts/UniteFileSync/config.json";
+        SyncConfig config = new SyncConfig();
+        config.destDir = destination;
+        config.srcDir = source;
+        var json = JsonUtility.ToJson(config);
+        File.WriteAllText(path,json);
+    }
     
     private void OnGUI()
     {
         GUILayout.Label($"Enter the paths of the folders you want to sync", EditorStyles.boldLabel);
-        GUILayout.Label($"Here a green text", GuiStyles.greenText);
-        GUILayout.Label($"Here a yellow text", GuiStyles.yellowText);
 
         Rect row1 = EditorGUILayout.BeginHorizontal();
         source = EditorGUILayout.TextField("Source path", source);
@@ -87,10 +99,18 @@ public class Window : EditorWindow
         {
             GUILayout.Label("Everything up to date", EditorStyles.boldLabel);
         }
-        
-        if (GUILayout.Button("Sync Folders"))
+
+        if (GUILayout.Button("Save Config"))
+        {
+            SaveConfig();
+        }
+
+        if (GUILayout.Button("LoadConfig"))
         {
             LoadConfig();
+        }
+        if (GUILayout.Button("Sync Folders"))
+        {
             if(source == "" || destination == "")
                 return;
             FileCopy.CopyIfNewer(source, destination);
@@ -103,6 +123,8 @@ public class Window : EditorWindow
         if (EditorApplication.timeSinceStartup > timer)
         {
             timer = (float)EditorApplication.timeSinceStartup + timerInterval;
+            if(source == "" || destination == "")
+                return;
             CheckForChanges();
             Debug.Log("Timer was triggered");
         }
