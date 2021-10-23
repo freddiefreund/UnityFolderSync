@@ -24,6 +24,8 @@ public class Window : EditorWindow
     private void OnGUI()
     {
         GUILayout.Label($"Enter the paths of the folders you want to sync", EditorStyles.boldLabel);
+        GUILayout.Label($"Here a green text", GuiStyles.greenText);
+        GUILayout.Label($"Here a yellow text", GuiStyles.yellowText);
 
         Rect row1 = EditorGUILayout.BeginHorizontal();
         source = EditorGUILayout.TextField("Source path", source);
