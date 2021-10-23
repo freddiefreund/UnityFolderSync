@@ -11,8 +11,10 @@ public static class GuiStyles
     {
         greenText = new GUIStyle()
         {
-            fontSize = 12, fontStyle = FontStyle.Bold,
-            normal = new GUIStyleState() {textColor = new Color(0.3f, 0.9f, 0f)}
+            fontSize = 12, 
+            fontStyle = FontStyle.Bold,
+            normal = new GUIStyleState() {textColor = new Color(0.3f, 0.55f, 0f)},
+            margin = new RectOffset(10, 2, 2, 10)
         };
         yellowText = new GUIStyle()
         {
