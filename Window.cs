@@ -22,7 +22,7 @@ public class Window : EditorWindow
     
     private void OnGUI()
     {
-        GUILayout.Label($"{Time.time.ToString("N1")},{timer.ToString("N1")}", EditorStyles.boldLabel);
+        GUILayout.Label($"Enter the paths of the folders you want to sync", EditorStyles.boldLabel);
 
         Rect row1 = EditorGUILayout.BeginHorizontal();
         source = EditorGUILayout.TextField("Source path", source);
@@ -40,16 +40,28 @@ public class Window : EditorWindow
         }
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginVertical();
-        /*foreach (var filename in newFileNames)
+        EditorGUILayout.Space();
+        if (newFileNames.Count > 0)
         {
-            //GUILayout.Label(filename, EditorStyles.label);    
-        }*/
-        EditorGUILayout.EndVertical();
+            GUILayout.Label("Changes found:", EditorStyles.boldLabel);
+            EditorGUILayout.BeginVertical();
+            foreach (var filename in newFileNames)
+            {
+                GUILayout.Label(filename, EditorStyles.label);    
+            }
+            EditorGUILayout.EndVertical();    
+        }
+        else
+        {
+            GUILayout.Label("Everything up to date", EditorStyles.boldLabel);
+        }
         
         if (GUILayout.Button("Sync Folders"))
         {
-            FileCopy.CopyIfNewer(source, destination);    
+            if(source == "" || destination == "")
+                return;
+            FileCopy.CopyIfNewer(source, destination);
+            newFileNames.Clear();
         }
     }
 
@@ -65,8 +77,6 @@ public class Window : EditorWindow
 
     private void CheckForChanges()
     {
-        if(source == "" || destination == "")
-            return;
         newFileNames = FileInfos.GetNewFiles(source, destination);
         if (newFileNames.Count == 0)
         {
