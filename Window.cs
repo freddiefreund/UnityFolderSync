@@ -14,6 +14,8 @@ public class Window : EditorWindow
     private SyncConfig config = new SyncConfig();
     private List<string> newFileNames = new List<string>();
     private List<string> modifiedFileNames = new List<string>();
+    private bool srcPathWarning = false;
+    private bool destPathWarning = false;
     
     [MenuItem("Window/UnityFolderSync")]
     public static void ShowWindow()
@@ -25,6 +27,7 @@ public class Window : EditorWindow
     private void Awake()
     {
         SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
+        Debug.Log(Directory.GetCurrentDirectory());
     }
 
     private void OnGUI()
@@ -38,7 +41,22 @@ public class Window : EditorWindow
             config.srcDir = EditorUtility.OpenFolderPanel("Source folder", config.srcDir, "");
         }
         EditorGUILayout.EndHorizontal();
-        
+        if (GUI.changed)
+        {
+            if (config.srcDir != "" && !FileInfos.DirPathExists(config.srcDir))
+            {
+                srcPathWarning = true;
+            }
+            else
+            {
+                srcPathWarning = false;
+            }
+        }
+        if (srcPathWarning)
+        {
+            GUILayout.Label("Source folder path does not exist.", EditorStyles.boldLabel);
+        }
+            
         Rect row2 = EditorGUILayout.BeginHorizontal();
         config.destDir = EditorGUILayout.TextField("Destination path", config.destDir);
         if (GUILayout.Button("Browse"))
@@ -46,7 +64,22 @@ public class Window : EditorWindow
             config.destDir = EditorUtility.OpenFolderPanel("Destination folder", Application.dataPath, "");
         }
         EditorGUILayout.EndHorizontal();
-
+        if (GUI.changed)
+        {
+            if (config.destDir != "" && !FileInfos.DirPathExists(config.srcDir))
+            {
+                destPathWarning = true;
+            }
+            else
+            {
+                destPathWarning = false;
+            }
+        }
+        if (destPathWarning)
+        {
+            GUILayout.Label("Destination folder path does not exist.", EditorStyles.boldLabel);
+        }
+        
         EditorGUILayout.Space();
         if (newFileNames.Count > 0)
         {
@@ -75,12 +108,12 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
-            config.SaveConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", config);
+            config.SaveConfig( "/Scripts/UnityFolderSync/config.json", config);
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
-            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
+            SyncConfig.LoadConfig("/Scripts/UnityFolderSync/config.json", out config);
         }
         if (GUILayout.Button("Sync Folders"))
         {
@@ -96,7 +129,7 @@ public class Window : EditorWindow
         if (EditorApplication.timeSinceStartup > timer)
         {
             timer = (float)EditorApplication.timeSinceStartup + timerInterval;
-            if(config.srcDir == "" || config.destDir == "")
+            if (config.srcDir == "" || config.destDir == "")
                 return;
             CheckForChanges();
         }
