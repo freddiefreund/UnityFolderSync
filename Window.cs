@@ -108,12 +108,12 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
-            config.SaveConfig( "/Scripts/UnityFolderSync/config.json", config);
+            config.SaveConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", config);
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
-            SyncConfig.LoadConfig("/Scripts/UnityFolderSync/config.json", out config);
+            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
         }
         if (GUILayout.Button("Sync Folders"))
         {
