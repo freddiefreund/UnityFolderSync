@@ -33,7 +33,16 @@ public class FileInfos
         
         List<String> newFiles = new List<string>();
         List<String> modifedFiles = new List<string>();
-        string[] srcFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
+        string[] srcFiles;
+        try
+        {
+            srcFiles = Directory.GetFiles(srcDir, "*", SearchOption.AllDirectories);
+        }
+        catch
+        {
+            Debug.LogError("Cannot list files");
+            return (new List<string>(), new List<string>());
+        }
 
         Array.ForEach(srcFiles, (srcFileLocation) =>
         {

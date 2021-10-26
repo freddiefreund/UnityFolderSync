@@ -17,7 +17,6 @@ public class SyncConfig
         }
         catch
         {
-            Debug.Log("FILE NOT FOUND");
             config = new SyncConfig();
             config.srcDir = "";
             config.destDir = "";

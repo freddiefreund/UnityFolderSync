@@ -27,7 +27,6 @@ public class Window : EditorWindow
     private void Awake()
     {
         SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
-        Debug.Log(Directory.GetCurrentDirectory());
     }
 
     private void OnGUI()
