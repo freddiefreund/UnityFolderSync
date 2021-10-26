@@ -18,7 +18,7 @@ public class SyncConfig
         catch
         {
             Debug.Log("FILE NOT FOUND");
-            config = null;
+            config = new SyncConfig();
         }
     }
     

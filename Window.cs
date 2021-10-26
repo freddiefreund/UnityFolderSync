@@ -99,7 +99,6 @@ public class Window : EditorWindow
             if(config.srcDir == "" || config.destDir == "")
                 return;
             CheckForChanges();
-            Debug.Log("Timer was triggered");
         }
     }
 

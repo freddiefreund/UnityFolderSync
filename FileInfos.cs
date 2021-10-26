@@ -20,10 +20,17 @@ public class FileInfos
     
     public static (List<String>, List<String>) GetNewFiles(String srcDir, String destDir)
     {
-
+        if (srcDir == "")
+        {
+            return (new List<string>(), new List<string>());
+        }
         if (!DirPathExists(srcDir))
         {
             Debug.LogError("Source Directory does not exist");
+            return (new List<string>(), new List<string>());
+        }
+        if (destDir == "")
+        {
             return (new List<string>(), new List<string>());
         }
         if (!DirPathExists(destDir))
