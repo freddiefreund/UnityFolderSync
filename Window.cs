@@ -12,6 +12,7 @@ public class Window : EditorWindow
     private float timerInterval = 10f;
     private float timer;
     private SyncConfig config = new SyncConfig();
+    private string configPath;
     private List<string> newFileNames = new List<string>();
     private List<string> modifiedFileNames = new List<string>();
     private bool srcPathWarning = false;
@@ -21,12 +22,17 @@ public class Window : EditorWindow
     public static void ShowWindow()
     {
         GetWindow<Window>("UnityFolderSync");
-        Debug.Log("ShowWindow called");
     }
 
     private void Awake()
     {
+<<<<<<< Updated upstream
         SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
+=======
+        configPath = Application.dataPath + "/Scripts/UnityFolderSync/config.json";
+        SyncConfig.LoadConfig(configPath, out config);
+        Debug.Log(Directory.GetCurrentDirectory());
+>>>>>>> Stashed changes
     }
 
     private void OnGUI()
@@ -107,18 +113,27 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
+<<<<<<< Updated upstream
             config.SaveConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", config);
+=======
+            config.SaveConfig(configPath, config);
+>>>>>>> Stashed changes
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
+<<<<<<< Updated upstream
             SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
+=======
+            SyncConfig.LoadConfig(configPath, out config);
+>>>>>>> Stashed changes
         }
         if (GUILayout.Button("Sync Folders"))
         {
             if(config.srcDir == "" || config.destDir == "")
                 return;
             FileCopy.CopyIfNewer(config.srcDir, config.destDir);
+            AssetDatabase.Refresh();
             newFileNames.Clear();
         }
     }
