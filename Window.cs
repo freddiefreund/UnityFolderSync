@@ -26,13 +26,9 @@ public class Window : EditorWindow
 
     private void Awake()
     {
-<<<<<<< Updated upstream
-        SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
-=======
         configPath = Application.dataPath + "/Scripts/UnityFolderSync/config.json";
         SyncConfig.LoadConfig(configPath, out config);
         Debug.Log(Directory.GetCurrentDirectory());
->>>>>>> Stashed changes
     }
 
     private void OnGUI()
@@ -113,20 +109,12 @@ public class Window : EditorWindow
 
         if (GUILayout.Button("Save Config"))
         {
-<<<<<<< Updated upstream
-            config.SaveConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", config);
-=======
             config.SaveConfig(configPath, config);
->>>>>>> Stashed changes
         }
 
         if (GUILayout.Button("LoadConfig"))
         {
-<<<<<<< Updated upstream
-            SyncConfig.LoadConfig(Application.dataPath + "/Scripts/UnityFolderSync/config.json", out config);
-=======
             SyncConfig.LoadConfig(configPath, out config);
->>>>>>> Stashed changes
         }
         if (GUILayout.Button("Sync Folders"))
         {
